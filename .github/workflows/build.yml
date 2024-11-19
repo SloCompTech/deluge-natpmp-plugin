@@ -1,0 +1,22 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install libcairo2-dev libgirepository1.0-dev
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade setuptools
+          pip install -r requirements.txt
+      - name: Build egg
+        run: python3 setup.py bdist_egg
